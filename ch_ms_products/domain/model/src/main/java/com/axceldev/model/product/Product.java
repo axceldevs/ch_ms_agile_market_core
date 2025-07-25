@@ -6,13 +6,14 @@ import lombok.Setter;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Locale;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class Product {
-    private String productId;
+    private Long productId;
     private String name;
     private String description;
     private String category;
