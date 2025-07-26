@@ -1,9 +1,14 @@
 package com.axceldev.usecase.product;
 
+import com.axceldev.model.exceptions.BusinessException;
+import com.axceldev.model.exceptions.TechnicalException;
 import com.axceldev.model.product.Product;
 import com.axceldev.model.product.gateways.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
+
+import static com.axceldev.model.exceptions.message.BusinessErrorMessage.PRODUCT_ALREADY_EXISTS;
+import static com.axceldev.model.exceptions.message.TechnicalErrorMessage.ERROR_CREATE_PRODUCT;
 
 @RequiredArgsConstructor
 public class ProductUseCase {
@@ -14,12 +19,14 @@ public class ProductUseCase {
         return existsProduct(product.getName())
                 .flatMap(exists -> {
                     if (exists) {
-                        return Mono.error(new IllegalStateException("Product already exists"));
+                        return Mono.error(new BusinessException(PRODUCT_ALREADY_EXISTS));
                     } else {
                         return productRepository.createProduct(product);
                     }
                 })
-                .doOnError(e -> System.err.println("Error creating product: " + e.getMessage()));
+                .onErrorMap(e ->
+                        new TechnicalException(e, ERROR_CREATE_PRODUCT)
+                );
     }
 
     private Mono<Boolean> existsProduct(String name) {

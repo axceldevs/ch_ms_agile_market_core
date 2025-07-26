@@ -1,6 +1,7 @@
 package com.axceldev.api;
 
 import com.axceldev.api.dto.CreateProductRequest;
+import com.axceldev.model.exceptions.BusinessException;
 import com.axceldev.model.product.Product;
 import com.axceldev.usecase.product.ProductUseCase;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+
+import static com.axceldev.model.exceptions.message.BusinessErrorMessage.INVALID_REQUEST;
 
 @Component
 @RequiredArgsConstructor
@@ -19,7 +22,7 @@ public class Handler {
 
     public Mono<ServerResponse> createProduct(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(CreateProductRequest.class)
-                .switchIfEmpty(Mono.error(() -> new IllegalStateException("Invalid request")))
+                .switchIfEmpty(Mono.error(() -> new BusinessException(INVALID_REQUEST)))
                 .flatMap(request -> productUseCase.createProduct(toData(request)))
                 .flatMap(product -> ServerResponse.ok().bodyValue(product));
     }
