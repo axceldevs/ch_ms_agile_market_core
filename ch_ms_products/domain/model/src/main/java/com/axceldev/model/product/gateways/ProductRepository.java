@@ -5,5 +5,5 @@ import reactor.core.publisher.Mono;
 
 public interface ProductRepository {
     Mono<Product> createProduct(Product product);
-    Mono<Product> getProductById(Long productId);
+    Mono<Product> findByName(String name);
 }

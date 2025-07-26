@@ -17,4 +17,13 @@ management:
       probes:
         enabled: true
 cors:
-  allowed-origins: ${ALLOWED_ORIGINS:"http://localhost:4200,http://localhost:8081"}
+  allowed-origins: ${ALLOWED_ORIGINS:http://localhost:4200,http://localhost:8081}
+
+adapters:
+  r2dbc:
+    host: ${DB_HOST:localhost}
+    port: ${DB_PORT:5436}
+    database: ${DB_NAME:agilemarketdb}
+    schema: ${DB_SCHEMA:sch_product}
+    username: ${DB_USER:admin}
+    password: ${DB_PASSWORD:admin}

@@ -1,5 +1,9 @@
 package com.axceldev.api;
 
+import com.axceldev.api.dto.CreateProductRequest;
+import com.axceldev.model.product.Product;
+import com.axceldev.usecase.product.ProductUseCase;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -10,21 +14,17 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class Handler {
 
-//private  final UseCase useCase;
-//private  final UseCase2 useCase2;
+    private final ObjectMapper mapper;
+    private final ProductUseCase productUseCase;
 
     public Mono<ServerResponse> createProduct(ServerRequest serverRequest) {
-        // useCase.logic();
-        return ServerResponse.ok().bodyValue("Product created successfully");
+        return serverRequest.bodyToMono(CreateProductRequest.class)
+                .switchIfEmpty(Mono.error(() -> new IllegalStateException("Invalid request")))
+                .flatMap(request -> productUseCase.createProduct(toData(request)))
+                .flatMap(product -> ServerResponse.ok().bodyValue(product));
     }
 
-    public Mono<ServerResponse> listenGETOtherUseCase(ServerRequest serverRequest) {
-        // useCase2.logic();
-        return ServerResponse.ok().bodyValue("");
-    }
-
-    public Mono<ServerResponse> listenPOSTUseCase(ServerRequest serverRequest) {
-        // useCase.logic();
-        return ServerResponse.ok().bodyValue("");
+    private Product toData(Object request) {
+        return mapper.convertValue(request, Product.class);
     }
 }
