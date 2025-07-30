@@ -27,3 +27,8 @@ adapters:
     schema: ${DB_SCHEMA:sch_product}
     username: ${DB_USER:admin}
     password: ${DB_PASSWORD:admin}
+  secrets-manager:
+    endpoint: ${SECRET_ENDPOINT}
+    region: ${AWS_REGION}
+    cacheSize: ${CACHE_SECRETS_SIZE}
+    cacheTime: ${CACHE_SECRETS_SECONDS}

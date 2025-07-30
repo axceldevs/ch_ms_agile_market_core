@@ -1,6 +1,7 @@
 package com.axceldev.api;
 
 import com.axceldev.api.dto.CreateProductRequest;
+import com.axceldev.api.validator.ProductRequestValidator;
 import com.axceldev.model.exceptions.BusinessException;
 import com.axceldev.model.product.Product;
 import com.axceldev.usecase.product.ProductUseCase;
@@ -19,10 +20,11 @@ public class Handler {
 
     private final ObjectMapper mapper;
     private final ProductUseCase productUseCase;
+    private final ProductRequestValidator validator;
 
     public Mono<ServerResponse> createProduct(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(CreateProductRequest.class)
-                .switchIfEmpty(Mono.error(() -> new BusinessException(INVALID_REQUEST)))
+                .flatMap(validator::validate)
                 .flatMap(request -> productUseCase.createProduct(toData(request)))
                 .flatMap(product -> ServerResponse.ok().bodyValue(product));
     }

@@ -1,5 +1,7 @@
 package com.axceldev.api.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,10 +15,13 @@ import java.util.List;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class CreateProductRequest {
+
+    @NotBlank(message = "Please provide a valid product name. This field cannot be blank.")
     private String name;
     private String description;
     private String category;
     private String brand;
+    @PositiveOrZero
     private Double price;
     private Double discount;
     private Integer stock;

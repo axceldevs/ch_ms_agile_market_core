@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import java.time.Duration;
 
 @Configuration
-public class PostgreSQLConnectionPool {
+public class PostgresSQLConnectionPool {
     /* Change these values for your project */
     public static final int INITIAL_SIZE = 12;
     public static final int MAX_SIZE = 15;

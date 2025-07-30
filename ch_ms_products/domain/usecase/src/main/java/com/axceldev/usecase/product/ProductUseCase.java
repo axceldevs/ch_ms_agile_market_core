@@ -24,13 +24,17 @@ public class ProductUseCase {
                         return productRepository.createProduct(product);
                     }
                 })
-                .onErrorMap(e ->
-                        new TechnicalException(e, ERROR_CREATE_PRODUCT)
-                );
+                .onErrorMap(this::mapToTechnicalIfNeeded);
     }
+
 
     private Mono<Boolean> existsProduct(String name) {
         return productRepository.findByName(name)
                 .hasElement();
+    }
+
+    private Throwable mapToTechnicalIfNeeded(Throwable error) {
+        return (error instanceof BusinessException) ? error :
+                new TechnicalException(error, ERROR_CREATE_PRODUCT);
     }
 }
