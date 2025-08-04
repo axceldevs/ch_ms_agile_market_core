@@ -13,6 +13,8 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class RouterRest {
     @Bean
     public RouterFunction<ServerResponse> routerFunction(Handler handler) {
-        return route(POST("/api/v1/create/product"), handler::createProduct);
+        return route(POST("/api/v1/create/product"), handler::createProduct)
+                .andRoute(GET("/api/v1/query/product"), handler::getAllProducts)
+                .andRoute(GET("/api/v1/query/product/{productId}"), handler::getProductById);
     }
 }

@@ -49,8 +49,12 @@ public class ExceptionHandler extends AbstractErrorWebExceptionHandler {
                                        "message", errorTechnical.getErrorMessage().getMessage(),
                                        "timestamp", Instant.now().toString()
                                ))
-               ).onErrorResume( error -> ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                       .build()
+               ).onErrorResume(Exception.class, error -> ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                       .bodyValue(Map.of(
+                               "code", 000,
+                               "message", error.getMessage(),
+                               "timestamp", Instant.now().toString()
+                       ))
                )
                .cast(ServerResponse.class);
     }
