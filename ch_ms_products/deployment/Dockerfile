@@ -1,6 +1,7 @@
-FROM amazoncorretto:17.0.16-alpine
+FROM amazoncorretto:17-alpine
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 VOLUME /tmp
-COPY *.jar ch_ms_products.jar
-ENV JAVA_OPTS=" -Xshareclasses:name=cacheapp,cacheDir=/cache,nonfatal -XX:+UseContainerSupport -XX:MaxRAMPercentage=70 -Djava.security.egd=file:/dev/./urandom"
+COPY ch_ms_products.jar app.jar
+ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=70 -Djava.security.egd=file:/dev/./urandom"
 USER appuser
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS  -jar ch_ms_products.jar" ]
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS  -jar app.jar" ]

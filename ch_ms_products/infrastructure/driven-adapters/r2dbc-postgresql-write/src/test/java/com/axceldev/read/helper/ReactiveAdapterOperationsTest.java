@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 class ReactiveAdapterOperationsTest {
 
-    private DummyRepository repository;
+    /*private DummyRepository repository;
     private ObjectMapper mapper;
     private ReactiveAdapterWriteOperations<DummyEntity, DummyData, String, DummyRepository> operations;
 
@@ -165,5 +165,5 @@ class ReactiveAdapterOperationsTest {
         }
     }
 
-    interface DummyRepository extends ReactiveCrudRepository<DummyData, String>, ReactiveQueryByExampleExecutor<DummyData> {}
+    interface DummyRepository extends ReactiveCrudRepository<DummyData, String>, ReactiveQueryByExampleExecutor<DummyData> {}*/
 }
